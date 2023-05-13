@@ -1,0 +1,7 @@
+*.npy
+*.pb
+*.index
+emnist_model/
+convnet/__pycache__/
+metrics/__pycache__/
+nn/__pycache__/

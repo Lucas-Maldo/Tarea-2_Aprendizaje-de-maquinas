@@ -1,0 +1,10 @@
+sink	0
+castle	1
+lion	2
+teapot	3
+flashlight	4
+blackberry	5
+spreadsheet	6
+bandage	7
+remote-control	8
+trombone	9
