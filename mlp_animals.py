@@ -39,8 +39,8 @@ def load_save_data(dir_path,etiquetas, output_name):
         label_path = os.path.join(dir_path, label)
         for image_path in os.listdir(label_path):
                 image = Image.open(os.path.join(label_path, image_path))
-                image_array = np.array(image)
-                image_array = ski.transform.resize(image_array[64,64])/255
+                image_array = np.array(image)/255
+                # image_array = ski.transform.resize(image_array,[64,64])/255
                 images.append(image_array)
                 target.append(label_to_idx[label])
 
@@ -70,7 +70,7 @@ def visualize_classes():
     plt.axis('off')
     plt.imshow(img, cmap="gray")
     
-visualize_classes()
+# visualize_classes()
 print(x_train.shape)
 print(x_test.shape)
 print(y_train.shape)
@@ -124,13 +124,26 @@ mlp.fit(x_train,
 # prediction using directly the trained model
 # there is also a function called -- predict -- , you can check it  
 y_pred = mlp(x_test, training = False)
+print(y_test)
 print(y_pred)
-
+print(y_pred.shape)
+print(metrics.multiclass_accuracy(y_test, y_pred))
 # computing confusion_matrix
 mc = metrics.confusion_matrix(y_test, y_pred, 12)
-  
-# print mc
-print(mc)
+print(mc, "\n")
+
+valores = [0,1,2,3,4,5,6,7,8,9,10,11]
+promedios = []
+for i in range(len(mc)):
+    promedios.append(max(mc[i])/sum(mc[i]))
+print(promedios,"\n")
+plt.title("Accuracy per class")
+fig, ax = plt.subplots()
+ax.bar(valores, promedios)
+for i, v in enumerate(promedios):
+    ax.text(i, v+0.01, str(round(v,3)), ha='center')
+plt.show()
+
 # mc as percentages
 rmc = mc.astype(np.float32) / np.sum(mc, axis = 1, keepdims = True)
 rmc = (rmc * 100).astype(np.int32) / 100 

@@ -114,9 +114,22 @@ mlp.fit(x_train,
 # prediction using directly the trained model
 # there is also a function called -- predict -- , you can check it  
 y_pred = mlp(x_test, training = False)
+print(y_test)
 print(y_pred)
+print(y_pred.shape)
+print(metrics.multiclass_accuracy(y_test, y_pred))
+
 # computing confusion_matrix
-mc = metrics.confusion_matrix(y_test, y_pred, 12)
+mc = metrics.confusion_matrix(y_test, y_pred, 10)
+
+valores = [0,1,2,3,4,5,6,7,8,9]
+promedios = []
+for i in range(len(mc)):
+    promedios.append(max(mc[i])/sum(mc[i]))
+print(promedios)
+plt.title("Accuracy per class")
+plt.bar(valores, promedios)
+plt.show()  
   
 # print mc
 print(mc)

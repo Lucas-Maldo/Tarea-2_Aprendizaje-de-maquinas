@@ -8,7 +8,9 @@ import metrics.metrics as metrics
 import keras.datasets as datasets
 import os
 import skimage.io as io
+from skimage.feature import hog
 import convnet.simple as simple
+import matplotlib.pyplot as plt
 import skimage as ski
 from PIL import Image
 
@@ -54,18 +56,18 @@ load_save_data(dir_path_test_animals, etiquetas, "test_animals")
 
 x_train = np.load("train_animals_x.pny.npy")
 y_train= np.load("train_animals_y.pny.npy")
-randomize = np.arange(len(x_train))
-np.random.shuffle(randomize)
-x_train = x_train[randomize]
-y_train = y_train[randomize]
+# randomize = np.arange(len(x_train))
+# np.random.shuffle(randomize)
+# x_train = x_train[randomize]
+# y_train = y_train[randomize]
 # x_train, X_sparse, y_train = shuffle(x_train, coo_matrix(x_train), y_train, random_state=0)
 
 x_test= np.load("test_animals_x.pny.npy")
 y_test= np.load("test_animals_y.pny.npy")
-randomize = np.arange(len(x_test))
-np.random.shuffle(randomize)
-x_test = x_test[randomize]
-y_test = y_test[randomize]
+# randomize = np.arange(len(x_test))
+# np.random.shuffle(randomize)
+# x_test = x_test[randomize]
+# y_test = y_test[randomize]
 # x_test, X_sparse, y_test = shuffle(x_test, coo_matrix(x_test), y_test, random_state=0)
 
 
@@ -125,8 +127,17 @@ print(y_test)
 print(y_pred)
 print(y_pred.shape)
 print(metrics.multiclass_accuracy(y_test, y_pred))
+
 # computing confusion_matrix
 mc = metrics.confusion_matrix(y_test, y_pred, 12)
+valores = [0,1,2,3,4,5,6,7,8,9,10,11]
+promedios = []
+for i in range(len(mc)):
+    promedios.append(max(mc[i])/sum(mc[i]))
+print(promedios)
+plt.title("Accuracy per class")
+plt.bar(valores, promedios)
+plt.show()
 model_file = 'emnist_model'
 model.save(model_file)
 print('model was saved at {}'.format(model_file))

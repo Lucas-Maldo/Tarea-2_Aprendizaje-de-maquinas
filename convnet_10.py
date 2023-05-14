@@ -124,13 +124,27 @@ y_pred = model(x_test, training = False)
 print(y_test)
 print(y_pred)
 print(y_pred.shape)
+print(metrics.multiclass_accuracy(y_test, y_pred))
 # computing confusion_matrix
 mc = metrics.confusion_matrix(y_test, y_pred, 10)
 model_file = 'emnist_model'
 model.save(model_file)
 print('model was saved at {}'.format(model_file))
 # print mc
-print(mc)
+print(mc, "\n")
+
+valores = [0,1,2,3,4,5,6,7,8,9]
+promedios = []
+for i in range(len(mc)):
+    promedios.append(max(mc[i])/sum(mc[i]))
+print(promedios,"\n")
+plt.title("Accuracy per class")
+fig, ax = plt.subplots()
+ax.bar(valores, promedios)
+for i, v in enumerate(promedios):
+    ax.text(i, v+0.01, str(round(v,3)), ha='center')
+plt.show()
+
 # mc as percentages
 rmc = mc.astype(np.float32) / np.sum(mc, axis = 1, keepdims = True)
 rmc = (rmc * 100).astype(np.int32) / 100 
